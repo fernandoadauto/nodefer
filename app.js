@@ -5,11 +5,14 @@ var session=require("express-session");
 var router_app=require("./routes_app");
 var session_middleware=require("./middlewares/session");
 var methodOverride=require("method-override");
+var formidable = require("express-form-data");
+
 var app=express();
 
 app.use("/public",express.static('public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
+app.use(formidable.parse({keepExtensions:true}));
 
 app.use(methodOverride("_method"));
 app.set("view engine","jade");
@@ -40,7 +43,7 @@ app.post("/users", function (req,res) {
 		username:req.body.username
 	});
 	user.save().then(function(us){
-		res.send("Guardamos");
+		res.send("Saved");
 	},function(err){
 
 		if(err){
